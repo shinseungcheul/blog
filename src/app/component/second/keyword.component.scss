@@ -1,0 +1,20 @@
+button {
+  position: sticky;
+  margin: 0.5rem;
+}
+
+
+
+.button-group {
+  overflow-x: scroll;
+  display: flex;
+}
+
+button:first-child{
+  margin-left: 0px;
+}
+
+.keyword-layer {
+  padding-left: 15px;
+  padding-right: 15px;
+}

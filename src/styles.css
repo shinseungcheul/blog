@@ -1,1 +1,11 @@
 /* You can add global styles to this file, and also import other style files */
+html, body{
+  height: 100%;
+  overflow: hidden;
+}
+body {
+  max-width: 1024px;
+  margin: auto;
+  border: solid 0.3px rgba(206, 206, 206, 0.5);
+  padding: 0.3px;
+}

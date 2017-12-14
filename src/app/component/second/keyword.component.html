@@ -1,0 +1,29 @@
+<div class="keyword-layer">
+  <div class="button-group">
+    <button type="button" class="btn" [ngClass]="{
+                                                  'btn-primary' : tag.category =='spring',
+                                                  'btn-danger' : tag.category == 'java',
+                                                  'btn-info' : tag.category == 'python',
+                                                  'btn-warning' : tag.category == 'angular'
+                                                  } "
+      *ngFor="let tag of tags">{{tag.name}}</button>
+    <!-- <button type="button" class="btn btn-primary">Primary</button> -->
+    <!-- <button type="button" class="btn btn-secondary">Secondary</button>
+    <button type="button" class="btn btn-success">Success</button>
+    <button type="button" class="btn btn-danger">Danger</button>
+    <button type="button" class="btn btn-warning">Warning</button>
+    <button type="button" class="btn btn-info">Info</button>
+    <button type="button" class="btn btn-light">Light</button>
+    <button type="button" class="btn btn-dark">Dark</button>
+    <button type="button" class="btn btn-link">Link</button>
+    <button type="button" class="btn btn-primary">Primary</button>
+    <button type="button" class="btn btn-secondary">Secondary</button>
+    <button type="button" class="btn btn-success">Success</button>
+    <button type="button" class="btn btn-danger">Danger</button>
+    <button type="button" class="btn btn-warning">Warning</button>
+    <button type="button" class="btn btn-info">Info</button>
+    <button type="button" class="btn btn-light">Light</button>
+    <button type="button" class="btn btn-dark">Dark</button>
+    <button type="button" class="btn btn-link">Link</button> -->
+  </div>
+</div>

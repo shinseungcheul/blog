@@ -1,0 +1,69 @@
+<div class="container-fluid d-flex">
+  <div class="side-menu">
+    <div class="">
+
+      <!-- post 추가 버튼 영역  -->
+      <div class="position-sticky">
+        <nav class="navbar navbar-light justify-content-between" style="">
+          <div class="d-flex w-100 justify-content-between">
+            <h5 class="mb-1">Post</h5>
+            <i class="material-icons hover" style="color:green;" (click)="addPost()">note_add</i>
+            <!-- <small>Plus</small> -->
+          </div>
+        </nav>
+      </div>
+
+      <!-- Post 리스트 -->
+      <div class="list-group side-list">
+        <div class="hover-layer" *ngFor="let item of posts" (click)="select(item)">
+
+          <a class="list-group-item list-group-item-action flex-column align-items-start "  >
+            <div class="d-flex w-100 justify-content-between">
+              <h5 class="mb-1">{{item.subject}}</h5>
+            </div>
+            <p class="mb-1" [innerHTML]="item.content.toString()"></p>
+            <small>{{item.createdAt|dateFormat}}</small>
+          </a>
+          <div class="horizental-line" *ngIf="i != list.length-1" >
+
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- 세로줄 -->
+  <div class="vertical-line"></div>
+
+  <!-- POST 영역  -->
+  <div class="post-area" *ngIf="!!selected">
+    <div class="post-menu">
+      <i class="material-icons" (click)="delete()">delete_forever</i>
+      <i class="material-icons" (click)="edit()">mode_edit</i>
+    </div>
+    <div class="horizental-line"></div>
+
+    <!-- <div class="post-metadata d-flex" >
+      <i class="material-icons">folder</i>
+      <span class="badge badge-secondary ">New</span>
+      <div class="vertical-line" style="height:inherit"></div>
+      <i class="material-icons">bookmark</i>
+      <span class="badge badge-secondary">New</span>
+      <span class="badge badge-secondary">New</span><span class="badge badge-secondary">New</span><span class="badge badge-secondary">New</span>
+    </div>
+    <div class="horizental-line"></div> -->
+
+    <div class="post-content">
+      <div class="post-subject">
+        <h2 *ngIf="!isEdit"><strong>{{selected.subject}}</strong></h2>
+        <h2 *ngIf="isEdit"><input type="text" name="" value="" [(ngModel)]="selected.subject"></h2>
+      </div>
+      <ckeditor [(ngModel)]="selected.content" debounce="500" *ngIf="isEdit">
+        {{selected.content}}
+      </ckeditor>
+      <div [innerHTML]="selected.content" *ngIf="!isEdit"></div>
+    </div>
+  </div>
+
+</div>

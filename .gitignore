@@ -4,7 +4,6 @@
 /dist
 /tmp
 /out-tsc
-
 # dependencies
 /node_modules
 
@@ -36,7 +35,7 @@ testem.log
 # e2e
 /e2e/*.js
 /e2e/*.map
-
+/src/environments/config.ts
 # System Files
 .DS_Store
 Thumbs.db

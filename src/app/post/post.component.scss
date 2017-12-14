@@ -1,0 +1,111 @@
+$scroll-height: calc(100% - 110px);
+
+:host {
+  .position-sticky {
+    background-color: white;
+    position: sticky!important;
+    top: 0;
+    z-index: 1000;
+  }
+}
+.navbar {
+  border: solid 1px rgba(206,206,206,0.9);
+  background-color: rgba(248,248,248,0.95);
+  border-radius: 15px 0 0;
+}
+
+.container-fluid {
+  height: 100%;
+  bottom: 60px;
+}
+
+.side-menu {
+  min-width: 300px;
+  width: 300px;
+  overflow: scroll;
+  // border-radius: 12px;
+  height: $scroll-height;
+}
+
+@media (max-width: 740px) {
+  .side-menu {
+    position: absolute;
+    left : -300px;
+  }
+  .side-menu:hover {
+    left : -10px;
+  }
+}
+
+
+.vertical-line {
+  display : none;
+}
+
+@media (min-width: 740px) {
+  .vertical-line {
+    display: block;
+    position: relative;
+    padding: 0 10px;
+    height: $scroll-height;
+  }
+
+  .vertical-line::before{
+    position: absolute;
+    box-sizing: content-box;
+    left: 50%;
+    display: block;
+    content: "";
+    width: 1px;
+    height: 100%;
+    background-color: rgba(206, 206, 206, 0.9);
+  }
+}
+
+.post-area {
+  padding: 0px 20px;
+  width : 100%;
+
+  > div {
+    width: 100%;
+    min-width: 100%;
+  }
+}
+
+
+.horizental-line::before{
+  position: absolute;
+  box-sizing: content-box;
+  top: 50%;
+  display: block;
+  content: "";
+  width: 100%;
+  height: 1px;
+  background-color: rgba(206, 206, 206, 0.9);
+}
+
+.horizental-line {
+  display: block;
+  position: relative;
+  height : 10px;
+}
+
+.list-group-item:hover {
+  background-color: rgba(206, 206, 206, 0.9);
+  cursor: pointer;
+}
+
+.list-group-item {
+  border: none;
+  max-height: 160px;
+  overflow: hidden;
+}
+
+.badge {
+  line-height: unset;
+  margin: 0 5px;
+}
+
+.material-icons:hover{
+  cursor : pointer;
+}
