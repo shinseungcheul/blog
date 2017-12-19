@@ -6,6 +6,7 @@ import { PostComponent } from './post.component';
 import { CKEditorModule } from 'ng2-ckeditor';
 import { ObservableService } from '../service/global-observable';
 import { DatePipe } from "./post.pipe"
+import { AngularFirestore} from 'angularfire2/firestore'
 
 @NgModule({
   imports: [
@@ -19,7 +20,6 @@ import { DatePipe } from "./post.pipe"
     PostComponent
   ],
   providers: [
-    // ObservableService
   ]
 })
 export class PostModule { }

@@ -1,4 +1,4 @@
-<div class="container-fluid d-flex">
+<div class="container-fluid d-flex" (focusin)="focus($evnet)">
   <div class="side-menu">
     <div class="">
 
@@ -44,15 +44,29 @@
     </div>
     <div class="horizental-line"></div>
 
-    <!-- <div class="post-metadata d-flex" >
-      <i class="material-icons">folder</i>
-      <span class="badge badge-secondary ">New</span>
+    <div class="post-metadata d-flex" >
+      <div class="vertical-middle mw-content">
+        <i class="material-icons">folder</i>
+        <span class="badge" [ngClass]="getClass()">{{selected.category}}</span>
+      </div>
       <div class="vertical-line" style="height:inherit"></div>
-      <i class="material-icons">bookmark</i>
-      <span class="badge badge-secondary">New</span>
-      <span class="badge badge-secondary">New</span><span class="badge badge-secondary">New</span><span class="badge badge-secondary">New</span>
+      <div class="vertical-middle tags">
+        <i class="material-icons">bookmark</i>
+        <span class="badge" [ngClass]="getClass()" *ngFor="let key of selected.tags">{{key.name}}</span>
+        <span class="badge" >random</span>
+        <span class="badge" >random</span>
+        <span class="badge" >random</span>
+        <span class="badge" >random</span>
+        <span class="badge" >random</span>
+        <span class="badge" >random</span>
+        <span class="badge" >random</span>
+        <span class="badge" >random</span>
+        <span class="badge" >random</span>
+        <span class="badge" >random</span>
+        <span class="badge" >random</span>
+      </div>
     </div>
-    <div class="horizental-line"></div> -->
+    <div class="horizental-line"></div>
 
     <div class="post-content">
       <div class="post-subject">

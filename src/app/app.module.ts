@@ -16,8 +16,10 @@ import { ObservableService } from './service/global-observable';
 import { AngularFireModule } from 'angularfire2/angularfire2';
 import { AngularFireDatabase } from 'angularfire2/database';
 import { AngularFireAuth } from 'angularfire2/auth'
-// import { AngularFirestore } from 'angularfire2/firestore'
+import { AngularFirestoreModule, AngularFirestore } from 'angularfire2/firestore'
 import { config } from '../environments/config'
+
+import { TestModule } from './test/test.module';
 
 
 @NgModule({
@@ -33,7 +35,9 @@ import { config } from '../environments/config'
     BrowserAnimationsModule,
     NgbModule.forRoot(),
     AngularFireModule.initializeApp(config.firebase),
+    AngularFirestoreModule,
     PostModule,
+    TestModule,
     AppRouterModule,
   ],
   providers: [

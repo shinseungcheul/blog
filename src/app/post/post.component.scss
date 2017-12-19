@@ -1,4 +1,6 @@
 $scroll-height: calc(100% - 110px);
+$side-menu-width : 300px;
+$post-aera-width : calc( 100% - #{$side-menu-width} - 20px );
 
 :host {
   .position-sticky {
@@ -20,8 +22,8 @@ $scroll-height: calc(100% - 110px);
 }
 
 .side-menu {
-  min-width: 300px;
-  width: 300px;
+  min-width: $side-menu-width;
+  width: $side-menu-width;
   overflow: scroll;
   // border-radius: 12px;
   height: $scroll-height;
@@ -36,7 +38,9 @@ $scroll-height: calc(100% - 110px);
     left : -10px;
   }
 }
-
+.post-area {
+  width : 100%;
+}
 
 .vertical-line {
   display : none;
@@ -60,11 +64,16 @@ $scroll-height: calc(100% - 110px);
     height: 100%;
     background-color: rgba(206, 206, 206, 0.9);
   }
+
+  .post-area {
+    width : $post-aera-width;
+  }
 }
 
+
 .post-area {
-  padding: 0px 20px;
-  width : 100%;
+  padding-left : 10px;
+
 
   > div {
     width: 100%;
@@ -108,4 +117,18 @@ $scroll-height: calc(100% - 110px);
 
 .material-icons:hover{
   cursor : pointer;
+}
+
+.vertical-middle > * {
+  vertical-align: middle;
+}
+
+.tags {
+  flex : auto;
+  display: inline-flex;
+  overflow-x: scroll;
+}
+
+.mw-content {
+  min-width: fit-content;
 }

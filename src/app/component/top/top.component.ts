@@ -14,6 +14,7 @@ import { ObservableService } from '../../service/global-observable';
 export class TopComponent implements OnInit {
   categories : any[] = [];
   categoryObject : Observable<any> ;
+  private addCategoryName : string = "";
 
 
   constructor(
@@ -32,5 +33,9 @@ export class TopComponent implements OnInit {
     let updates = {};
     updates['/categories/'+updateKey] = {name : "Python", url : "python"};
     firebase.database().ref().update(updates);
+  }
+
+  public addCategory(){
+    console.log(firebase.database().ref("/categories"))
   }
 }

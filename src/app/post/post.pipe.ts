@@ -11,7 +11,11 @@ export class DatePipe implements PipeTransform {
     result += (t.getMonth()+1)+"."
     result += (t.getDate())+ " "
     result += (t.getHours())+ ":"
-    result += (t.getMinutes())
+    if(t.getMinutes()<10){
+      result += ("0"+t.getMinutes())
+    }else {
+      result += t.getMinutes()
+    }
     return result;
   }
 }

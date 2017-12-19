@@ -9,6 +9,8 @@ import 'rxjs/add/observable/from'
 import 'rxjs/add/operator/filter'
 import 'rxjs/add/operator/delay'
 
+import { Tag } from '../../type'
+import { categoryClass } from '../../constant'
 
 @Component({
   selector: 'keyword',
@@ -25,31 +27,29 @@ export class KeywordComponent implements OnInit, OnDestroy {
     "btn-success", "btn-danger","btn-warning","btn-info","btn-light"
   ]
 
-  private tags : any[] ;
-
+  private tags : any[] = [];
+  private tagsData : any = null;
   private subject : Subject<any> = new Subject();
   private maps : any = {};
 
   constructor(
     private fireDb : AngularFireDatabase,
     private activatedRouter : ActivatedRoute,
-    private observableService : ObservableService
+    private observableService : ObservableService,
   ) {  }
 
   ngOnInit() {
     this.observableService.addObservable("keyword",this.subject);
+
     this.subject.filter( (p) => {
       console.log(p, "filter")
       return p.state == "changed"
     }).subscribe( (p) => {
-      this.init(p.id);
       this.id = p.id
+      this.init(p.id);
     })
 
-    this.fireDb.list("/tags").valueChanges().subscribe((result) => {
-      this.tags = result
-    })
-    // firebase.database().ref().once()
+
 
   }
 
@@ -58,8 +58,44 @@ export class KeywordComponent implements OnInit, OnDestroy {
   }
 
   init(id?:string){
-    // this.tags.filter((t) => {
-    //   t.categories.forEach((p) => p)
+    this.tags = [];
+    console.log(typeof this.id,"?????")
+    if( this.id == null || this.id == "" || typeof this.id === "undefined"){
+      firebase.database().ref("/tags")
+              .orderByChild("category")
+              .once("value").then((ref) => {
+        ref.forEach( r => {
+          this.tags.push(r.toJSON())
+        } )
+      })
+      return ;
+    }
+
+    firebase.database().ref("/tags")
+            .orderByChild("category")
+            .equalTo(this.id ? this.id : "*")
+            .once("value").then((ref) => {
+      ref.forEach( r => {
+        this.tags.push(r.toJSON())
+      } )
+    })
+
+
+    // this.fireDb.list("/tags").valueChanges().subscribe( ref => {
+    //   this.tags = ref
+    // })
+
+
+    // let ref = firebase.database().ref("/tags")
+    //                   .orderByChild("category")
+    //                   // .equalTo( true)
+    //                   .once("value", ref => {
+    //                     console.log(ref)
+    //                   });
+
+    // firebase.database().ref("/tags").once('value',ref => {
+    //   this.tags = new Array(ref.toJSON());
+    //   console.log(this.tags, this.tagsData)
     // })
   }
 
@@ -67,7 +103,7 @@ export class KeywordComponent implements OnInit, OnDestroy {
 
   }
 
-  getClasssss(i:number){
-    return this.cssClasses[i]
+  getClass(tag : Tag){
+    return categoryClass[tag.category]
   }
 }

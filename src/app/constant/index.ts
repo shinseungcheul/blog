@@ -1,0 +1,1 @@
+export { categoryClass } from './categoryClass'

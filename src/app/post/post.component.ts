@@ -1,4 +1,4 @@
-import { Component, OnInit, AfterViewInit } from '@angular/core';
+import { Component, OnInit, AfterViewInit, OnDestroy, HostListener } from '@angular/core';
 import { Router, ActivatedRoute, ParamMap, Params} from '@angular/router';
 import { ObservableService } from '../service/global-observable';
 import { Subject } from 'rxjs/Subject';
@@ -10,6 +10,8 @@ import * as firebase from 'firebase';
 import 'rxjs/add/operator/switchMap';
 import 'rxjs/add/observable/combineLatest';
 
+import { categoryClass } from '../constant'
+
 
 @Component({
   selector: 'post-body',
@@ -18,7 +20,13 @@ import 'rxjs/add/observable/combineLatest';
     './post.component.scss'
   ]
 })
-export class PostComponent implements OnInit, AfterViewInit {
+export class PostComponent implements OnInit, AfterViewInit, OnDestroy {
+  @HostListener("focusin",["$event"])
+  public focus(event){
+    console.log(event, "aaas");
+  }
+
+
   private category : string= '';
   keywordSubject : Subject<any>;
   list : any = Array.from(Array(10).keys());
@@ -31,7 +39,7 @@ export class PostComponent implements OnInit, AfterViewInit {
     private observableService : ObservableService,
     private fireDb : AngularFireDatabase,
     private fireAuth : AngularFireAuth,
-    // private fireStore : AngularFirestore,
+    private fireStore : AngularFirestore,
   ) {  }
 
   ngOnInit() {
@@ -40,41 +48,36 @@ export class PostComponent implements OnInit, AfterViewInit {
 
     this.activatedRouter.paramMap.subscribe( (p:Params) =>{
       this.category = p.params.id;
+      this.selected = null;
       this.keywordSubject.next({state : "changed", id :p.params.id})
       this.init();
     }  )
-    // this.list = firebase.database().ref().on("/posts)
-
-
-
 
 
   }
 
+  ngOnDestroy(){
+    this.selected = null;
+    this.category = null;
+  }
+
+
+
   init(){
     this.list = this.fireDb.list("/posts", ref => {
-      console.log(this.category,"dkjsdfk")
-      if(this.category){
-        return ref.orderByChild("category").equalTo(this.category)
-      }
-      // return ref;
-    }).valueChanges().subscribe( (res:Post[]) => {
-      this.posts = res.sort((a,b) => {
-        if( a.createdAt > b.createdAt){
-          return -1;
-        }
-        if( a.createdAt < b.createdAt){
-          return 1;
-        }
-        return 0;
-      });
 
+      if(this.category || this.category ==""){
+        return ref.orderByChild("category").equalTo(this.category).limitToLast(10)
+      }
+      return ref.orderByChild("createdAt").limitToLast(10);
+    }).valueChanges().subscribe( (res:Post[]) => {
+      this.posts = res.reverse();
       console.log(this.posts)
       if(!this.selected || this.selected == null){
         console.log("여기?")
         // console.log(this.posts.splice(0,1)[0])
         let temp = this.posts[0]
-        this.selected = temp;
+        this.select(temp)
       }
     })
   }
@@ -84,7 +87,6 @@ export class PostComponent implements OnInit, AfterViewInit {
   }
 
   public select(item:Post){
-    console.log(item)
     this.selected = item;
   }
 
@@ -127,5 +129,11 @@ export class PostComponent implements OnInit, AfterViewInit {
     post.remove();
     this.selected = null;
   }
+
+  public getClass():string{
+    return categoryClass[this.selected.category]
+  }
+
+
 
 }

@@ -4,11 +4,16 @@ export class Post {
   }
   uid : string;
   subject : string;
-  tag : string[]
+  tags : TagKey[];
   content : string;
   category : string;
   createdAt : number;
   createdUserId : string;
   createdUserName : string;
 
+}
+
+export interface TagKey {
+  name : string;
+  uid : string;
 }
