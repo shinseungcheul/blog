@@ -1,4 +1,4 @@
-<div class="container-fluid d-flex" (focusin)="focus($evnet)">
+<div class="container-fluid d-flex" >
   <div class="side-menu">
     <div class="">
 
@@ -50,21 +50,12 @@
         <span class="badge" [ngClass]="getClass()">{{selected.category}}</span>
       </div>
       <div class="vertical-line" style="height:inherit"></div>
-      <div class="vertical-middle tags">
-        <i class="material-icons">bookmark</i>
+      <div class="vertical-middle tags" >
+        <i class="material-icons" (click)="editTag($event)">bookmark</i>
         <span class="badge" [ngClass]="getClass()" *ngFor="let key of selected.tags">{{key.name}}</span>
-        <span class="badge" >random</span>
-        <span class="badge" >random</span>
-        <span class="badge" >random</span>
-        <span class="badge" >random</span>
-        <span class="badge" >random</span>
-        <span class="badge" >random</span>
-        <span class="badge" >random</span>
-        <span class="badge" >random</span>
-        <span class="badge" >random</span>
-        <span class="badge" >random</span>
-        <span class="badge" >random</span>
+        <input #tagInput style="font-size : 75%;"  *ngIf="updateTag" type="text" name="" [(ngModel)]="tagString" (focusout)="updateTagFn()" (keyup.enter)="updateTagFn()">
       </div>
+
     </div>
     <div class="horizental-line"></div>
 

@@ -7,6 +7,7 @@ import { CKEditorModule } from 'ng2-ckeditor';
 import { ObservableService } from '../service/global-observable';
 import { DatePipe } from "./post.pipe"
 import { AngularFirestore} from 'angularfire2/firestore'
+import { TagActionDirective, FocusInput } from './tag.directive'
 
 @NgModule({
   imports: [
@@ -17,7 +18,9 @@ import { AngularFirestore} from 'angularfire2/firestore'
   ],
   declarations: [
     DatePipe,
-    PostComponent
+    PostComponent,
+    TagActionDirective,
+    FocusInput,
   ],
   providers: [
   ]

@@ -1,8 +1,10 @@
-import { Component, OnInit, AfterViewInit, OnDestroy, HostListener } from '@angular/core';
+import { Component, OnInit, AfterViewInit, OnDestroy, HostListener, ViewChildren, QueryList, ViewChild, ElementRef} from '@angular/core';
 import { Router, ActivatedRoute, ParamMap, Params} from '@angular/router';
 import { ObservableService } from '../service/global-observable';
 import { Subject } from 'rxjs/Subject';
-import { Post } from '../type'
+import { Post,Tag } from '../type'
+import { TagActionDirective } from './tag.directive';
+
 import { AngularFireDatabase } from 'angularfire2/database';
 import { AngularFireAuth } from 'angularfire2/auth';
 import { AngularFirestore } from 'angularfire2/firestore';
@@ -21,11 +23,7 @@ import { categoryClass } from '../constant'
   ]
 })
 export class PostComponent implements OnInit, AfterViewInit, OnDestroy {
-  @HostListener("focusin",["$event"])
-  public focus(event){
-    console.log(event, "aaas");
-  }
-
+  @ViewChildren(TagActionDirective) _tagActions : QueryList<TagActionDirective>;
 
   private category : string= '';
   keywordSubject : Subject<any>;
@@ -86,6 +84,10 @@ export class PostComponent implements OnInit, AfterViewInit, OnDestroy {
 
   }
 
+  public log(){
+    this._tagActions.forEach(r => console.log(r))
+  }
+
   public select(item:Post){
     this.selected = item;
   }
@@ -132,6 +134,96 @@ export class PostComponent implements OnInit, AfterViewInit, OnDestroy {
 
   public getClass():string{
     return categoryClass[this.selected.category]
+  }
+
+  private updateTag : boolean = false;
+  private tagString : string = ""
+  @ViewChild('tagInput') _tagInput : ElementRef ;
+
+  public editTag(e:Event){
+    this.updateTag = true;
+
+  }
+
+  public updateTagFn(){
+    if(this.tagString =="" || this.tagString == null){
+      this.updateTag = false;
+      return;
+    }
+    console.log(this.selected)
+    let isDuplicated : boolean = false
+    if(this.selected.tags != null || this.selected.tags){
+      isDuplicated = Boolean(this.selected.tags.filter(tag => tag.name === this.tagString).length);
+    }else {
+      this.selected.tags = [];
+    }
+    if(isDuplicated){
+      this.tagString = "";
+      this.updateTag = false;
+      return;
+    }
+    let serverTag:firebase.database.Reference = firebase.database().ref("/tags")
+    this.updateTagfn(serverTag);
+
+
+
+  }
+
+  public updateTaginPost(tagKey:string){
+    let fObject = firebase.database().ref("/posts/"+this.selected.uid+"/tags");
+    this.selected.tags.push({name:this.tagString, uid : tagKey})
+    console.log(this.selected.tags)
+    fObject.update(this.selected.tags);
+    this.updateCompleted()
+  }
+
+  public updateCompleted(){
+    this.updateTag = false;
+    this.tagString = "";
+  }
+
+  public createTag():Tag{
+    let newTag = new Tag();
+    newTag.category = this.category;
+    newTag.name = this.tagString;
+    newTag.refPosts = [this.selected.uid];
+    return newTag;
+  }
+
+  public updateTagfn(serverTag:firebase.database.Reference){
+    serverTag.orderByChild("name")
+            .equalTo(this.tagString)
+            .once('value').then( tagRef => {
+              console.log(tagRef)
+              let tagKey : string = "";
+              let flag = false;
+              let temp : firebase.database.DataSnapshot[] = [];
+              tagRef.forEach( r => {
+                if (r.toJSON().category == this.category) {
+                    temp.push(r)
+                    flag = true;
+                }
+              })
+              if(flag){
+                temp.forEach( (d:firebase.database.DataSnapshot) => {
+                  tagKey = d.ref.key
+                  d.ref.child("/refPosts").push(this.selected.uid) ;
+                })
+
+              }else {
+                let newTag = this.createTag();
+                newTag.uid = tagRef.ref.push().key;
+                firebase.database().ref("/tags/"+newTag.uid).update(newTag);
+                tagKey = newTag.uid;
+              }
+
+
+              this.updateTaginPost(tagKey);
+
+              // if(temp.length > 0){
+              //   console.log(temp)
+              // }
+            });
   }
 
 
